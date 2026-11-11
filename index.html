@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lemzouri Candy - Traditional Moroccan Sweets</title>
+<style>
+:root {
+--primary: #e63946;
+--secondary: #f4a261;
+--accent: #e9c46a;
+--dark: #1d3557;
+--light: #f8f9fa;
+--white: #ffffff;
+--green: #25d366;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #fff3e0; color: #333; line-height: 1.6; }
+
+/* Header & Navigation */
+header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.logo-area { display: flex; align-items: center; gap: 15px; }
+.logo-area h1 { font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+.nav-controls { display: flex; gap: 10px; align-items: center; }
+button { background: var(--white); color: var(--primary); border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+button:hover { background: var(--accent); color: var(--dark); }
+
+/* Views */
+.view { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.view.active { display: block; }
+
+/* Welcome Page */
+#welcome-view { text-align: center; padding: 4rem 1rem; background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://www.google.com/url?q=https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto%3Dformat%26fit%3Dcrop%26w%3D1200%26q%3D80&source=gmail&ust=1794420246836000&sa=E') center/cover; border-radius: 16px; margin: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+#welcome-view h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+#welcome-view p { font-size: 1.2rem; color: #555; margin-bottom: 2rem; }
+.cta-btn { font-size: 1.2rem; padding: 1rem 2.5rem; background: var(--primary); color: white; border-radius: 50px; }
+.cta-btn:hover { background: #d62828; color: white; }
+
+/* Main Shop Layout */
+.shop-container { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+@media(max-width: 768px) { .shop-container { grid-template-columns: 1fr; } }
+
+/* Catalog Grid */
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
+.product-card { background: var(--white); border-radius: 12px; padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; border: 2px solid #eee; }
+.product-card h3 { color: var(--dark); font-size: 1.1rem; margin-bottom: 0.5rem; }
+.product-card p { font-size: 0.9rem; color: #666; margin-bottom: 1rem; }
+.product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+.price { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
+.qty-input { width: 60px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+
+/* Calculator & Admin Panel (White Background) */
+.panel { background: var(--white); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+.panel h3 { color: var(--dark); border-bottom: 2px solid #f0f0f0; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+.calc-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 0.95rem; }
+.calc-row.total { font-size: 1.2rem; font-weight: bold; color: var(--primary); border-top: 2px dashed #ddd; padding-top: 0.8rem; margin-top: 0.8rem; }
+.input-group { margin-bottom: 1rem; }
+.input-group label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; font-weight: 600; }
+.input-group input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 6px; }
+
+/* WhatsApp Button */
+.whatsapp-btn { background-color: var(--green); color: white; width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 1.1rem; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 1rem; cursor: pointer; text-decoration: none; font-weight: bold; box-shadow: 0 4px 6px rgba(37,211,102,0.3); }
+.whatsapp-btn:hover { background-color: #1ebe5d; color: white; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+<div class="logo-area">
+<h1 id="brand-title">🍬 Lemzouri Candy</h1>
+</div>
+<div class="nav-controls">
+<select id="lang-select" onchange="switchLanguage()">
+<option value="en">English</option>
+<option value="ar">دارجة (Moroccan)</option>
+</select>
+<select id="currency-select" onchange="updateCurrency()">
+<option value="GBP">GBP (£)</option>
+<option value="EUR">EUR (€)</option>
+<option value="USD">USD ($)</option>
+</select>
+<button onclick="showView('shop-view')">Shop / متجر</button>
+</div>
+</header>
+
+<!-- Welcome View -->
+<div id="welcome-view" class="view active">
+<h2 id="wel-title">Welcome to Lemzouri Candy</h2>
+<p id="wel-desc">Discover the finest authentic traditional Moroccan sweets, delivered right to your door in the UK.</p>
+<button class="cta-btn" onclick="showView('shop-view')" id="wel-btn">Enter Store / دخل للمتجر</button>
+</div>
+
+<!-- Shop View -->
+<div id="shop-view" class="view">
+<div class="shop-container">
+<!-- Left: Catalog -->
+<div>
+<h2 id="cat-heading" style="margin-bottom: 1rem; color: var(--dark);">Our Traditional Sweets</h2>
+<div class="catalog-grid" id="catalog-grid">
+<!-- Products rendered via JS -->
+</div>
+</div>
+
+<!-- Right: Calculator & Admin Panel -->
+<div>
+<!-- Calculator Panel -->
+<div class="panel">
+<h3 id="calc-heading">Order Simulator & Calculator</h3>
+<div class="calc-row">
+<span id="txt-subtotal">Subtotal:</span>
+<span id="subtotal-val">0.00 £</span>
+</div>
+
+<div class="input-group">
+<label id="lbl-transport">Transport & Logistics (Casa ➔ UK / Local):</label>
+<input type="number" id="transport-cost" value="12.00" step="0.5" oninput="calculateTotal()">
+</div>
+
+<div class="input-group">
+<label id="lbl-customs">Packaging & Customs / Fees:</label>
+<input type="number" id="customs-cost" value="3.00" step="0.5" oninput="calculateTotal()">
+</div>
+
+<div class="input-group">
+<label id="lbl-time">Estimated Delivery / Prep Time:</label>
+<input type="text" id="delivery-time" value="5 to 8 Working Days">
+</div>
+
+<div class="calc-row total">
+<span id="txt-total">Total:</span>
+<span id="total-val">15.00 £</span>
+</div>
+
+<a id="whatsapp-order-btn" href="#" target="_blank" class="whatsapp-btn" onclick="sendWhatsAppOrder()">
+📲 Send Order via WhatsApp
+</a>
+</div>
+
+<!-- Admin Management Panel (White Background) -->
+<div class="panel">
+<h3 id="admin-heading">⚙️ Admin Management</h3>
+<div class="input-group">
+<label>WhatsApp Management Number:</label>
+<input type="text" id="admin-phone" value="+44 7493 685067" oninput="updatePhone(this.value)">
+</div>
+<p style="font-size: 0.8rem; color: #666;" id="admin-note">Modify prices or phone number directly here for live updates.</p>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const translations = {
+en: {
+title: "Lemzouri Candy - Traditional Moroccan Sweets",
+welTitle: "Welcome to Lemzouri Candy",
+welDesc: "Discover the finest authentic traditional Moroccan sweets, delivered right to your door in the UK.",
+welBtn: "Enter Store",
+catHeading: "Our Traditional Sweets",
+calcHeading: "Order Simulator & Calculator",
+txtSubtotal: "Subtotal:",
+lblTransport: "Transport & Logistics (Casa ➔ UK / Local):",
+lblCustoms: "Packaging & Customs / Fees:",
+lblTime: "Estimated Delivery / Prep Time:",
+txtTotal: "Total:",
+whatsappBtn: "📲 Send Order via WhatsApp",
+adminHeading: "⚙️ Admin Management",
+adminNote: "Modify prices or phone number directly here for live updates."
+},
+ar: {
+title: "Lemzouri Candy - الحلويات المغربية الأصيلة",
+welTitle: "مرحباً بكم في Lemzouri Candy",
+welDesc: "اكتشفوا ألذ الحلويات والشهيوات المغربية التقليدية الأصيلة، التوصيل لحد باب داركم في بريطانيا.",
+welBtn: "دخل للمتجر",
+catHeading: "حلوياتنا التقليدية",
+calcHeading: "حاسبة الطلب والتسعير",
+txtSubtotal: "المجموع الجزئي:",
+lblTransport: "مصاريف النقل واللوجستيك (الدار البيضاء ➔ بريطانيا):",
+lblCustoms: "مصاريف التغليف والجمارك:",
+lblTime: "المدة التقديرية للتسليم:",
+txtTotal: "المجموع الكلي:",
+whatsappBtn: "📲 إرسال الطلب عبر الواتساب",
+adminHeading: "⚙️ لوحة التسيير والتحكم",
+adminNote: "قم بتعديل الأسعار أو رقم الهاتف هنا للتحديث الفوري."
+}
+};
+
+let currentLang = 'en';
+let currentCurrency = 'GBP';
+let currencyRates = { GBP: 1, EUR: 1.18, USD: 1.28 };
+let currencySymbols = { GBP: '£', EUR: '€', USD: '$' };
+let adminPhone = "+447493685067";
+
+let products = [
+{ id: 1, name: "Cornes de Gazelle", desc: "Almond & orange blossom pastry", price: 15.00 },
+{ id: 2, name: "Chebakia", desc: "Honey & sesame traditional sweets", price: 12.00 },
+{ id: 3, name: "Fekkas", desc: "Moroccan crunchy almond biscuits", price: 10.00 },
+{ id: 4, name: "Kaab Ghzal Deluxe", desc: "Premium handcrafted almond horns", price: 18.00 }
+];
+
+function showView(viewId) {
+document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+document.getElementById(viewId).classList.add('active');
+if(viewId === 'shop-view') renderCatalog();
+}
+
+function renderCatalog() {
+const grid = document.getElementById('catalog-grid');
+grid.innerHTML = '';
+products.forEach(p => {
+let convertedPrice = (p.price * currencyRates[currentCurrency]).toFixed(2);
+let card = document.createElement('div');
+card.className = 'product-card';
+card.innerHTML = `
+<div>
+<h3>${https://www.google.com/url?q=http://p.name&source=gmail&ust=1794420246837000&sa=E}</h3>
+<p>${p.desc}</p>
+</div>
+<div class="product-footer">
+<span class="price">${convertedPrice} ${currencySymbols[currentCurrency]}</span>
+<input type="number" class="qty-input" min="0" value="0" data-id="${https://www.google.com/url?q=http://p.id&source=gmail&ust=1794420246837000&sa=E}" onchange="calculateTotal()" oninput="calculateTotal()">
+</div>
+`;
+grid.appendChild(card);
+});
+calculateTotal();
+}
+
+function calculateTotal() {
+let subtotal = 0;
+document.querySelectorAll('.qty-input').forEach(input => {
+let qty = parseInt(input.value) || 0;
+if(qty > 0) {
+let prodId = parseInt(input.getAttribute('data-id'));
+let prod = products.find(p => https://www.google.com/url?q=http://p.id&source=gmail&ust=1794420246837000&sa=E === prodId);
+subtotal += prod.price * qty;
+}
+});
+
+let rate = currencyRates[currentCurrency];
+let transport = parseFloat(document.getElementById('transport-cost').value) || 0;
+let customs = parseFloat(document.getElementById('customs-cost').value) || 0;
+let grandTotal = (subtotal * rate) + transport + customs;
+
+document.getElementById('subtotal-val').innerText = `${(subtotal * rate).toFixed(2)} ${currencySymbols[currentCurrency]}`;
+document.getElementById('total-val').innerText = `${grandTotal.toFixed(2)} ${currencySymbols[currentCurrency]}`;
+}
+
+function updateCurrency() {
+currentCurrency = document.getElementById('currency-select').value;
+renderCatalog();
+}
+
+function switchLanguage() {
+currentLang = document.getElementById('lang-select').value;
+let t = translations[currentLang];
+
+document.documentElement.lang = currentLang;
+document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+document.getElementById('brand-title').innerText = "🍬 " + (currentLang === 'ar' ? "حلوى المزوري" : "Lemzouri Candy");
+document.getElementById('wel-title').innerText = t.welTitle;
+document.getElementById('wel-desc').innerText = t.welDesc;
+document.getElementById('wel-btn').innerText = t.welBtn;
+document.getElementById('cat-heading').innerText = t.catHeading;
+document.getElementById('calc-heading').innerText = t.calcHeading;
+document.getElementById('txt-subtotal').innerText = t.txtSubtotal;
+document.getElementById('lbl-transport').innerText = t.lblTransport;
+document.getElementById('lbl-customs').innerText = t.lblCustoms;
+document.getElementById('lbl-time').innerText = t.lblTime;
+document.getElementById('txt-total').innerText = t.txtTotal;
+document.getElementById('whatsapp-order-btn').innerText = t.whatsappBtn;
+document.getElementById('admin-heading').innerText = t.adminHeading;
+document.getElementById('admin-note').innerText = t.adminNote;
+}
+
+function updatePhone(newPhone) {
+adminPhone = newPhone.replace(/[^0-9+]/g, '');
+}
+
+function sendWhatsAppOrder() {
+let orderSummary = "📋 *New Order / طلب جديد - Lemzouri Candy*
+
+";
+let hasItems = false;
+
+document.querySelectorAll('.qty-input').forEach(input => {
+let qty = parseInt(input.value) || 0;
+if(qty > 0) {
+hasItems = true;
+let prodId = parseInt(input.getAttribute('data-id'));
+let prod = products.find(p => https://www.google.com/url?q=http://p.id&source=gmail&ust=1794420246837000&sa=E === prodId);
+orderSummary += `• ${qty}x ${https://www.google.com/url?q=http://prod.name&source=gmail&ust=1794420246837000&sa=E}
+`;
+}
+});
+
+if(!hasItems) {
+alert("Please select at least one item / الرجاء اختيار منتج واحد على الأقل");
+return;
+}
+
+let total = document.getElementById('total-val').innerText;
+let deliveryTime = document.getElementById('delivery-time').value;
+
+orderSummary += `
+⏱ *Estimated Time / المدة التقديرية:* ${deliveryTime}`;
+orderSummary += `
+💰 *Total Amount / المجموع الكلي:* ${total}`;
+
+let cleanPhone = adminPhone.replace('+', '');
+let url = `https://www.google.com/url?q=https://wa.me/$%7BcleanPhone%7D?text%3D$%7BencodeURIComponent(orderSummary)%7D%60&source=gmail&ust=1794420246837000&sa=E;
+document.getElementById('whatsapp-order-btn').href = url;
+}
+
+window.onload = () => { renderCatalog(); };
+</script>
+</body>
+</html>

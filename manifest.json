@@ -1,0 +1,27 @@
+{
+  "short_name": "Lemzouri Candy",
+  "name": "Lemzouri Candy - Traditional Moroccan Sweets",
+  "description": "Authentic traditional Moroccan sweets delivered right to your door in the UK.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#fff3e0",
+  "theme_color": "#e63946",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "ltr",
+  "lang": "en-US",
+  "categories": ["shopping", "food"]
+}
